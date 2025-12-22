@@ -1,0 +1,18 @@
+{
+    "defaultInput": 0,
+    "defaultOutput": 0,
+    "inputNames": [
+        "Behringer UMC1820",
+        "HiFi DAC",
+        "Focusr. Scarlett"
+    ],
+    "outputNames": [
+        "Sennheiser HD600",
+        "Monoprice M1060",
+        "Beyerdyn. DT-880",
+        "AKG K712 Pro",
+        "Sony MDR-7506",
+        "Casse"
+    ],
+    "midiBaseNote": 60
+}
