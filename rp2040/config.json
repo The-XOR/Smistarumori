@@ -1,16 +1,16 @@
 {
-    "defaultInput": 0,
+    "defaultInput": 1,
     "defaultOutput": 0,
     "inputNames": [
-        "UMC-1820",
         "HiFi DAC",
+        "UMC-1820",
         "Scarlett"
     ],
     "outputNames": [
-        "Sennh. HD600",
-        "M-lith M1060",
-        "Beyer DT-880p",
-        "AKG K712 Pro",
+        "Sennheis.HD600",
+        "Monolith M1060",
+        "Beyer DT880pro",
+        "AKG K-712 Pro",
         "Sony MDR-7506",
         "Altoparlanti"
     ],
