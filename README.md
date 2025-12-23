@@ -45,6 +45,7 @@ Se si hanno braccia a somiglianza T-Rex e si vuole risparmiare qualche soldino, 
 
 ### Scatolame
 La scatola (per lo iutiuber itagliota, "Lo Scatolo") è progettata secondo il materiale elencato qui sotto. Se si cambiano i tipi di tasti, il display o altro è oltremodo ovvio che la progettazione andra' rivista. I file di progettazione in formato originale sono Freecad, e questa è abbastanza parametrica: tutte le misure sono nel file **Dimensioni.FCStd**.
+Per tenere i LED alla giusta altezza, con riferimento ai pulsanti utilizzati, ci sono da stampare in 3D degli appositi distanziali (file **Rialzo led.FCStd**).
 
 ### Il materiale di partenza
 Tutta roba rigorosamente cinese e a basso costo, così come le nostre finanze imponevano. Ho comprato tutto da Aliexpress, ma sono componenti standard presenti ovunque.
