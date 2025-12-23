@@ -2,17 +2,17 @@
     "defaultInput": 0,
     "defaultOutput": 0,
     "inputNames": [
-        "Behringer UMC1820",
+        "UMC-1820",
         "HiFi DAC",
-        "Focusr. Scarlett"
+        "Scarlett"
     ],
     "outputNames": [
-        "Sennheiser HD600",
-        "Monoprice M1060",
-        "Beyerdyn. DT-880",
+        "Sennh. HD600",
+        "M-lith M1060",
+        "Beyer DT-880p",
         "AKG K712 Pro",
         "Sony MDR-7506",
-        "Casse"
+        "Altoparlanti"
     ],
     "midiBaseNote": 60
 }

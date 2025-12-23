@@ -3,26 +3,19 @@ import busio
 import digitalio
 import json
 import time
-import terminalio
 import usb_midi
 import adafruit_midi
 from adafruit_midi.note_on import NoteOn
 from lcd.lcd import LCD
 from lcd.i2c_pcf8574_interface import I2CPCF8574Interface
 
-# IL DISPLAY VA ALIMENTATO A 5V
-# I 2 PIN DELLA RETROILLUMINAZIONE VANNO PONTICELLATI TRA LORO
-i2c = busio.I2C(board.GP29, board.GP28)  # SCL=GP29, SDA=GP28
-# Attendi che I2C sia pronto
-while not i2c.try_lock():
-    pass
-i2c.unlock()
-lcd = LCD(I2CPCF8574Interface(i2c, 0x27), num_rows=2, num_cols=16) 
-
-# Configurazione MIDI USB
-midi = adafruit_midi.MIDI(midi_in=usb_midi.ports[0], midi_out=usb_midi.ports[1], in_channel=0, out_channel=0)
-
 RELE_ACCESO = False # il modulo rele funiona a logica inversa
+MIDI_ACTIVITY_ON = False
+
+# I/O
+midi_activity = digitalio.DigitalInOut(getattr(board, f'GP27'))
+midi_activity.direction = digitalio.Direction.OUTPUT
+midi_activity.value = not MIDI_ACTIVITY_ON
 
 # Configurazione pin rele (GP0-GP7)
 rele_pins = []
@@ -44,9 +37,24 @@ for i in range(len(button_pins)):
     button_pins[i].direction = digitalio.Direction.INPUT
     button_pins[i].pull = digitalio.Pull.UP
 
-midi_activity = digitalio.DigitalInOut(getattr(board, f'GP27'))
-midi_activity.direction = digitalio.Direction.OUTPUT
-midi_activity.value = True
+# IL DISPLAY VA ALIMENTATO A 5V
+# I 2 PIN DELLA RETROILLUMINAZIONE VANNO PONTICELLATI TRA LORO
+i2c = busio.I2C(board.GP29, board.GP28)  # SCL=GP29, SDA=GP28
+# Attendi che I2C sia pronto
+while not i2c.try_lock():
+    pass
+i2c.unlock()
+lcd = LCD(I2CPCF8574Interface(i2c, 0x27), num_rows=2, num_cols=16) 
+
+# mostra versione all'avvio
+lcd.clear()
+lcd.set_cursor_pos(0, 0)
+lcd.print("Smistarumori")
+lcd.set_cursor_pos(1, 0)
+lcd.print("Versione 1.0")
+
+# Configurazione MIDI USB
+midi = adafruit_midi.MIDI(midi_in=usb_midi.ports[0], midi_out=usb_midi.ports[1], in_channel=0, out_channel=0)
 
 # Stato dei pulsanti (per debouncing)
 last_button_states = [True] * len(button_pins)  # True = non premuto (pull-up)
@@ -65,16 +73,16 @@ def init():
         
         seleziona_uscita(uscitaSelezionata)
         seleziona_ingresso(ingressoSelezionato)
-        return config
+        return True
     except Exception as e:
         print(f"Errore lettura configurazione: {e}")
-        return {}
+        return False
 
 def seleziona_ingresso(num):
     """Seleziona l'ingresso audio (funzione placeholder)"""
     global ingressoSelezionato
     print(f"Selezione ingresso {num}")
-    if num != ingressoSelezionato and 0 <= num <=2:
+    if 0 <= num <=2:
         ingressoSelezionato = num
         if num == 0:
             rele_pins[6].value = RELE_ACCESO # (1,0) -> selezione ingresso 1
@@ -90,7 +98,7 @@ def seleziona_ingresso(num):
 def seleziona_uscita(num):
     """Seleziona l'uscita audio (funzione placeholder)"""
     global uscitaSelezionata
-    if num != uscitaSelezionata and 0 <= num <= 5:
+    if 0 <= num <= 5:
         for i in range(6):
             if i == num:
                 rele_pins[i].value = RELE_ACCESO
@@ -117,9 +125,9 @@ def aggiorna_display():
     print(f"In: {nomiIngressi[ingressoSelezionato]} Out: {nomiUscite[uscitaSelezionata]}")
     lcd.clear()
     lcd.set_cursor_pos(0, 0)
-    lcd.print(nomiIngressi[ingressoSelezionato])
+    lcd.print(f"i{ingressoSelezionato}:{nomiIngressi[ingressoSelezionato]}")
     lcd.set_cursor_pos(1, 0)
-    lcd.print(nomiUscite[uscitaSelezionata])
+    lcd.print(f"o{uscitaSelezionata}:{nomiUscite[uscitaSelezionata]}")
    
 def key_pressed(i):
     print(f"Premuto tasto {i}")
@@ -132,14 +140,19 @@ def key_pressed(i):
 def leggi_pulsanti():
     global last_button_states, button_pins
     
+    tasto_rilevato = False
     for i in range(len(button_pins)):
         current_state = button_pins[i].value      
         # Rileva pressione (transizione da HIGH a LOW con pull-up)
         if last_button_states[i] and not current_state:
-            key_pressed(i)   
+            key_pressed(i)
+            tasto_rilevato = True   
             time.sleep(0.2)  # Debouncing        
         last_button_states[i] = current_state      
         
+        if tasto_rilevato:
+            break  # le tastiere da suonare sono ben altre
+
 def elabora_midi():
     """Elabora messaggi MIDI in arrivo"""
     msg = midi.receive()    
@@ -153,16 +166,23 @@ def elabora_midi():
 def midiActivity():
     global midi_activity
     for i in range(3):
-        midi_activity.value = False
+        midi_activity.value = MIDI_ACTIVITY_ON
         time.sleep(0.01)
-        midi_activity.value = True
+        midi_activity.value = not MIDI_ACTIVITY_ON
         time.sleep(0.01)
     
-init()
+if not init():
+    lcd.clear()
+    lcd.set_cursor_pos(0, 0)
+    lcd.print("ERRORE CONFIG")
+    while True:
+        time.sleep(1)
+
+time.sleep(1)  # Pausa per lettura versione firmware
 aggiorna_display()
 
-# Loop principale
 try:
+    # Loop principale
     while True:
         leggi_pulsanti()
         elabora_midi()
