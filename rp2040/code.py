@@ -87,10 +87,10 @@ def seleziona_ingresso(num):
             rele_pins[6].value = RELE_ACCESO # (1,0) -> selezione ingresso 1
         elif num == 1:
             rele_pins[6].value = not RELE_ACCESO # (0,0) -> selezione ingresso 2
-            #rele_pins[7].value = not RELE_ACCESO 
+            rele_pins[7].value = not RELE_ACCESO 
         elif num == 2:    
             rele_pins[6].value = not RELE_ACCESO 
-           #rele_pins[7].value = RELE_ACCESO # (0,1) -> selezione ingresso 3
+            rele_pins[7].value = RELE_ACCESO # (0,1) -> selezione ingresso 3
         sendMidi_in()
         aggiorna_display()
 

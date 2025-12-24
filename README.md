@@ -2,6 +2,7 @@
 
 Questo progetto, che non ci vergognamo di definire micidiale, è tipo fai conto un patchbay a 3 ingressi e 6 uscite. La libidine scatta col fatto che è comandabile via MIDI, e come se non bastasse genera un codice di nota a seconda dell'entrata/uscita selezionata. In questo modo, se si utilizzano software di correzione si puo' cambiare preset di in base alla cuffia selezionata. In effetti, tutto questo delirio di progetto nasce proprio dalla mia pigrizia nel cambiare preset a mano.
 Il circuito utilizza dei relè, quindi non ci dovrebbe essere degrado del segnale. La logica di controllo è completamente isolata dalla parte audio, non c'è nessun punto di contatto. Tranquillizzato l'audiofilo di turno, narriamo ora quella che è stata una lunga gestazione.
+I nomi delle entrate/uscite mostrati sul display sono configurati nel file **config.json**; per i nomi si hanno a disposizione fino a 14 caratteri.
 
 ### I Collegamenti
 Così come nasce dalla mente malata dello scrivente, e principalmente poiché questa è la mia esatta configurazione, i collegamenti
