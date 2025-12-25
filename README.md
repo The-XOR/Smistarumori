@@ -16,7 +16,7 @@ Questo percorso di segnali è ampiamente modificabile a piacere, visto che sono 
 Collegare l RP2040-Zero al PC, premere il pulsante BOOT e collegarlo. 
 Se CircuitPython ancora non fu installato, scaricarlo da 
 https://downloads.circuitpython.org/bin/waveshare_rp2040_zero/en_US/adafruit-circuitpython-waveshare_rp2040_zero-en_US-10.0.3.uf2
-e copiarlo controllur: si riavviera' ed ora saremo pronti a programmare il cippo.
+e copiarlo: si riavviera' ed ora saremo pronti a programmare il cippo.
 Nel caso, scollegare e ricollegare RP2040 finche' non appare il devais nomati CIRCUITPY.
 
 ### Librerie:
