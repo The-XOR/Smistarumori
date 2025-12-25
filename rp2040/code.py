@@ -95,7 +95,6 @@ def seleziona_ingresso(num):
         aggiorna_display()
 
 def seleziona_uscita(num):
-    """Seleziona l'uscita audio (funzione placeholder)"""
     global uscitaSelezionata
     if 0 <= num <= 5:
         for i in range(6):
@@ -122,7 +121,8 @@ def sendMidi_Out():
 def aggiorna_display():
     global ingressoSelezionato, nomiIngressi, uscitaSelezionata, nomiUscite
     print(f"In: {nomiIngressi[ingressoSelezionato]} Out: {nomiUscite[uscitaSelezionata]}")
-    lcdprint(f"I:{nomiIngressi[ingressoSelezionato]}", f"O:{nomiUscite[uscitaSelezionata]}")
+    ingr = chr(65 + ingressoSelezionato)  # A, B, C
+    lcdprint(f"{ingr}<{nomiIngressi[ingressoSelezionato]}", f"{uscitaSelezionata+1}>{nomiUscite[uscitaSelezionata]}")
    
 def key_pressed(i):
     print(f"Premuto tasto {i}")
@@ -180,7 +180,7 @@ def panico(error_msg):
 if not init():
     panico("ERRORE CONFIG")
 
-lcdprint("Smistarumori", "Versione 1.0")
+lcdprint("Smistarumori", "v 1.0 (C) The XOR")
 time.sleep(1)  # Pausa per lettura versione firmware
 seleziona_uscita(uscitaSelezionata)
 seleziona_ingresso(ingressoSelezionato)
@@ -190,7 +190,7 @@ try:
     while True:
         leggi_pulsanti()
         elabora_midi()
-        time.sleep(0.01)  # 10ms delay
+        time.sleep(0.01)  # lasciamo un po' di tempo alla CPU x ricezione midi
         
 except Exception as e:
     panico(str(e))
