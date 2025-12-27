@@ -2,7 +2,7 @@
     "defaultInput": 1,
     "defaultOutput": 0,
     "inputNames": [
-        "HiFi DAC",
+        "SMSL C-200 DAC",
         "UMC-1820",
         "Scarlett"
     ],

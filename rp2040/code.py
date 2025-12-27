@@ -10,8 +10,10 @@ from adafruit_midi.note_on import NoteOn
 from lcd.lcd import LCD
 from lcd.i2c_pcf8574_interface import I2CPCF8574Interface
 
+FW_VERSION = "1.0"
 RELE_ACCESO = False # il modulo rele funiona a logica inversa
 MIDI_ACTIVITY_ON = False
+PERSISTENZA = False
 
 # Configurazione pin rele (GP0-GP7)
 rele_pins = []
@@ -55,6 +57,16 @@ last_button_states = [True] * len(button_pins)  # True = non premuto (pull-up)
 
 def init():
     global uscitaSelezionata, ingressoSelezionato, MIDI_NOTE_BASE, nomiIngressi, nomiUscite
+    global PERSISTENZA
+    try:    
+        f = open("ciec", "w")
+        PERSISTENZA = True
+        f.close()
+    except Exception as e:
+        print(f"Persitenza disabilitata: {e}")
+        PERSISTENZA = False
+        
+    print(f"Modalità persistenza: {'ON' if PERSISTENZA else 'OFF'}")
    
     try:
         with open("config.json", "r") as f:
@@ -63,12 +75,31 @@ def init():
             uscitaSelezionata = config.get("defaultOutput", 0)
             MIDI_NOTE_BASE = config.get("midiBaseNote", 60)
             nomiIngressi = config.get("inputNames", [])
-            nomiUscite = config.get("outputNames", [])        
+            nomiUscite = config.get("outputNames", [])    
+            f.close()   
+
+        if PERSISTENZA:
+            # Carica stato ultimo ingresso/uscita selezionati
+            if file_exists("state.json"):
+                with open("state.json", "r") as f:
+                    state = json.load(f)
+                    ingressoSelezionato = state.get("lastInput", ingressoSelezionato)
+                    uscitaSelezionata = state.get("lastOutput", uscitaSelezionata)
+                    print(f"Ultimo stato caricato: Ingresso {ingressoSelezionato}, Uscita {uscitaSelezionata}")
+                    f.close()
+
         return True
     except Exception as e:
         print(f"Errore lettura configurazione: {e}")
         return False
 
+def file_exists(filename):
+    try:
+        os.stat(filename)
+        return True
+    except OSError:
+        return False
+    
 def lcdprint(riga1, riga2=""):
     global lcd
     lcd.clear()
@@ -85,6 +116,7 @@ def seleziona_ingresso(num):
         ingressoSelezionato = num
         if num == 0:
             rele_pins[6].value = RELE_ACCESO # (1,0) -> selezione ingresso 1
+            rele_pins[7].value = not RELE_ACCESO 
         elif num == 1:
             rele_pins[6].value = not RELE_ACCESO # (0,0) -> selezione ingresso 2
             rele_pins[7].value = not RELE_ACCESO 
@@ -122,19 +154,36 @@ def aggiorna_display():
     global ingressoSelezionato, nomiIngressi, uscitaSelezionata, nomiUscite
     print(f"In: {nomiIngressi[ingressoSelezionato]} Out: {nomiUscite[uscitaSelezionata]}")
     ingr = chr(65 + ingressoSelezionato)  # A, B, C
-    lcdprint(f"{ingr}<{nomiIngressi[ingressoSelezionato]}", f"{uscitaSelezionata+1}>{nomiUscite[uscitaSelezionata]}")
+    lcdprint(f"{ingr}:{nomiIngressi[ingressoSelezionato]}", f"{uscitaSelezionata+1}:{nomiUscite[uscitaSelezionata]}")
    
 def key_pressed(i):
     print(f"Premuto tasto {i}")
     if 0 <= i <= 5:
         if i != uscitaSelezionata:
             seleziona_uscita(i)
+            serialize_state()
             
     elif 6 <= i <= 8:
         ingresso_num = i - 6
         if ingresso_num != ingressoSelezionato:
             seleziona_ingresso(ingresso_num)
+            serialize_state()
             
+def serialize_state():
+    global PERSISTENZA, ingressoSelezionato, uscitaSelezionata
+    if PERSISTENZA:
+        try:
+            with open("state.json", "w") as f:
+                state = {
+                    "lastInput": ingressoSelezionato,
+                    "lastOutput": uscitaSelezionata
+                }
+                json.dump(state, f)
+                f.flush()
+                f.close()
+                print("Stato salvato")
+        except Exception as e:
+            print(f"Errore salvataggio stato: {e}")            
 
 def leggi_pulsanti():
     global last_button_states, button_pins    
@@ -146,7 +195,7 @@ def leggi_pulsanti():
             if not tasto_rilevato:
                 tasto_rilevato = True   
                 key_pressed(i)
-                time.sleep(0.2)  # Debouncing        
+                time.sleep(0.3)  # Debouncing        
         last_button_states[i] = current_state      
 
 def elabora_midi():
@@ -180,7 +229,10 @@ def panico(error_msg):
 if not init():
     panico("ERRORE CONFIG")
 
-lcdprint("Smistarumori", "v 1.0 (C) The XOR")
+if PERSISTENZA:
+    lcdprint("Smistarumori", f"v{FW_VERSION} (C) The XOR")
+else:
+    lcdprint(f"Fw ver. {FW_VERSION}", "NO PERSISTENZA")
 time.sleep(1)  # Pausa per lettura versione firmware
 seleziona_uscita(uscitaSelezionata)
 seleziona_ingresso(ingressoSelezionato)

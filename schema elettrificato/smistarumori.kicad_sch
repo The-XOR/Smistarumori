@@ -5090,8 +5090,8 @@
 		)
 		(uuid "0129f70c-07de-4c7e-b0e5-b72c105623a9")
 	)
-	(label "In 2 ON GP7=HIGH"
-		(at 54.61 96.52 0)
+	(label "In B ON GP7=HIGH"
+		(at 64.77 96.52 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5160,7 +5160,7 @@
 		)
 		(uuid "51bab4d8-c9b9-4db4-9647-e00c0b47e94e")
 	)
-	(label "In 1 ON GP6=LOW"
+	(label "In A ON GP6=LOW"
 		(at 81.28 55.88 0)
 		(effects
 			(font
@@ -5170,7 +5170,7 @@
 		)
 		(uuid "7623183f-6a82-4c4d-8c20-da63c3cd637a")
 	)
-	(label "In 3 ON GP7=LOW"
+	(label "In C ON GP7=LOW"
 		(at 78.74 105.41 0)
 		(effects
 			(font

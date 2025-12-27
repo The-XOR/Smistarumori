@@ -836,7 +836,7 @@
 			)
 		)
 	)
-	(global_label "Return"
+	(global_label "Input A"
 		(shape input)
 		(at 223.52 77.47 0)
 		(fields_autoplaced yes)
@@ -848,7 +848,7 @@
 		)
 		(uuid "421898e5-7dc1-457d-822d-2b0d5673b647")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 232.6737 77.47 0)
+			(at 233.3389 77.47 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -968,7 +968,7 @@
 			)
 		)
 	)
-	(global_label "Input 3"
+	(global_label "Input C"
 		(shape input)
 		(at 264.16 40.64 0)
 		(fields_autoplaced yes)
@@ -980,7 +980,7 @@
 		)
 		(uuid "c0489f89-9052-4b0e-9edf-a85410a2f7fd")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 274.0998 40.64 0)
+			(at 274.1603 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1012,7 +1012,7 @@
 			)
 		)
 	)
-	(global_label "Input 2"
+	(global_label "Input B"
 		(shape input)
 		(at 264.16 35.56 0)
 		(fields_autoplaced yes)
@@ -1024,7 +1024,7 @@
 		)
 		(uuid "e11214bd-f778-437e-a342-1026333b6754")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 274.0998 35.56 0)
+			(at 274.1603 35.56 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1078,7 +1078,7 @@
 			)
 		)
 	)
-	(global_label "Input 1"
+	(global_label "Return"
 		(shape input)
 		(at 223.52 72.39 0)
 		(fields_autoplaced yes)
@@ -1090,7 +1090,7 @@
 		)
 		(uuid "f727009e-25e5-4967-8d50-6936693a3777")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 233.4598 72.39 0)
+			(at 232.6737 72.39 0)
 			(effects
 				(font
 					(size 1.27 1.27)
