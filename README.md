@@ -99,7 +99,7 @@ Una volta collegate le schede rele alla scheda principale, verificare che premen
 MODALITA_SVILUPPO = False  # Imposta a False per abilitare la persistenza dell'ultima configurazione
 
 ```
-Una volta disabilitata la modalita' di sviluppo, il microcontrollore non sara' piu' visibile (come disco) dal sistema operativo. Per eventuali modifiche a qualsivoglia file, si puo':
+Disabilitata la modalita' di sviluppo, il microcontrollore non sara' piu' visibile (come disco) dal sistema operativo. Per eventuali modifiche a qualsivoglia file, si puo':
 - Resettare completamente il cippo, come narrato innanzi (flash_nuke.uf2 etc). Questa è la via secca.
 - La via umida: collegare lo Smistarumori al PC tenendo premuto il tasto **Input C**. In questo modo, il disco dovrebbe riapparire, ma non funzionera' la persistenza.
 
