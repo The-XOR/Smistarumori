@@ -73,10 +73,14 @@ def init():
             config = json.load(f)
             ingressoSelezionato = config.get("defaultInput", 0)
             uscitaSelezionata = config.get("defaultOutput", 0)
+            disabilitaPersistenza = config.get("disabilitaPersistenza", False)
             MIDI_NOTE_BASE = config.get("midiBaseNote", 60)
             nomiIngressi = config.get("inputNames", [])
             nomiUscite = config.get("outputNames", [])    
             f.close()   
+
+        if disabilitaPersistenza:
+            PERSISTENZA = False
 
         if PERSISTENZA:
             # Carica stato ultimo ingresso/uscita selezionati
@@ -230,9 +234,10 @@ if not init():
     panico("ERRORE CONFIG")
 
 if PERSISTENZA:
-    lcdprint("Smistarumori", f"v{FW_VERSION} (C) The XOR")
+    lcdprint(f"SmistarumoriV{FW_VERSION}" "(C) The XOR")
 else:
-    lcdprint(f"Fw ver. {FW_VERSION}", "NO PERSISTENZA")
+    lcdprint(f"SmistarumoriV{FW_VERSION}" "(C) The XOR (-)")
+
 time.sleep(1)  # Pausa per lettura versione firmware
 seleziona_uscita(uscitaSelezionata)
 seleziona_ingresso(ingressoSelezionato)

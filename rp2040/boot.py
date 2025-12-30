@@ -6,7 +6,7 @@ import time
 import usb_midi
 
 supervisor.set_usb_identification("The XOR", "Smistarumori")
-usb_midi.set_names(streaming_interface_name="Smistarumori MIDI", in_jack_name="Smistarumori MIDI In", out_jack_name="Smistarumori MIDI Out"  )
+usb_midi.set_names(streaming_interface_name="Smistarumori MIDI", audio_control_interface_name="Smistarumori MIDI", in_jack_name="Smistarumori MIDI In", out_jack_name="Smistarumori MIDI Out"  )
 
 # OCIO: UNA volta messa a False, NON si potrà più accedere al filesystem da PC!
 # OCIO: Se si rimane fuori di casa, avviare il coso premendo il pulsante INPUT_C

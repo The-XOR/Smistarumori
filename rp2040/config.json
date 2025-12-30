@@ -1,6 +1,7 @@
 {
     "defaultInput": 1,
     "defaultOutput": 0,
+    "disabilitaPersistenza": false,
     "inputNames": [
         "SMSL C-200 DAC",
         "UMC-1820",
